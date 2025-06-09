@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Handheld grippers are increasingly used to collect human demonstrations due to their ease of deployment and versatility. However, most existing designs lack tactile sensing, despite the critical role of tactile feedback in precise manipulation. We present a portable, lightweight gripper with integrated tactile sensors that enables synchronized collection of visual and tactile data in diverse, real-world, and in-the-wild settings. Building on this hardware, we propose a cross-modal representation learning framework that integrates visual and tactile signals while preserving their distinct characteristics. The learned representations are interpretable and consistently emphasize contact regions during physical interactions. When used for downstream manipulation tasks, these representations enable more efficient and effective policy learning, supporting precise robotic manipulation based on multimodal feedback. We validate our approach on fine-grained tasks such as test tube insertion and pipette-based fluid transfer, demonstrating improved accuracy and robustness under external disturbances.">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Touch in the Wild: Learning Fine-Grained Manipulation with a Portable Visuo-Tactile Gripper</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- <section>
+    <div class="hero-video" style="position: absolute; inset: 0;">
+      <img src="static/img/teaser.png" style="width: 100vw;  object-fit: cover;">
+    </div>
+  </section> -->
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <!-- combine title and subtitle in one block -->
+            <div class="publication-header">
+              <h1 style="margin-bottom: 0; font-size: 300%">
+                Touch in the Wild
+              </h1>
+              <h1 class="title is-2 publication-title">
+                Learning Fine-Grained Manipulation with a Portable 
+                <span style="color: #46b1f0;">Visuo</span>-<span style="color: #9b59b6;">Tactile</span> Gripper
+              </h1>
+
+              <p class="subtitle" style="margin-top: 0.5rem; color: #666;">
+                Anonymous
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-4">
+          Our Visual-Tactile policy can perform fine-grained manipulations, such as handling transparent test tubes.
+        </h2>
+        <h2 class="title is-5" style="color: rgb(189, 189, 189);">
+          (Under human disturbances and visual occlusions, the robot relies on tactile feedback to guide its decisions.)
+        </h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h3 class="title is-4"></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="overall teaser">
+    <div class="container">
+      <div class="hero-body has-text-centered">
+        <video id="teaser_video" width=50% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+          <source src="video/compressed/teaser.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">In-the-Wild Data Collection</h2>
+          <div class="content has-text-justified">
+            <p>
+              We collected over 2,700 demonstrations covering 43 manipulation tasks across 12 indoor and outdoor environments. This provided us with more than 2.6 million visuo-tactile pairs for Visuo-Tactile Pretraining &amp; Downstream Imitation Learning.
+            </p>
+          </div>
+  
+          <div class="video-carousel" style="position: relative; overflow: hidden; padding: 0 4rem;">
+              <button class="carousel-nav prev"
+                      style="
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        width: 3rem;
+                        background: rgba(0,0,0,0.2);
+                        border: none;
+                        border-top-right-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                        cursor: pointer;
+                        z-index: 10;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      ">
+                &#10094;&#10094;
+              </button>
+  
+            <div class="carousel-slides">
+              <!-- Slide 1 -->
+              <div class="carousel-slide" data-index="0">
+                <div class="columns is-multiline is-mobile is-centered">
+                  <!-- Videos 1–5 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/3.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/4.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/5.mp4" type="video/mp4">
+                    </video>
+                  </div>
+  
+                  <!-- Videos 6–10 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/6.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/7.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/8.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/9.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/10.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Slide 2 -->
+              <div class="carousel-slide" data-index="1" style="display: none;">
+                <div class="columns is-multiline is-mobile is-centered">
+                  <!-- Videos 11–15 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/11.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/12.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/13.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/14.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/15.mp4" type="video/mp4">
+                    </video>
+                  </div>
+  
+                  <!-- Videos 16–20 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/16.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/17.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/18.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/19.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/20.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Slide 3 -->
+              <div class="carousel-slide" data-index="2" style="display: none;">
+                <div class="columns is-multiline is-mobile is-centered">
+                  <!-- Videos 21–25 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/21.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/22.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/23.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/24.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/25.mp4" type="video/mp4">
+                    </video>
+                  </div>
+  
+                  <!-- Videos 26–30 -->
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/26.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/27.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/28.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/29.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="column is-one-fifth">
+                    <video width="100%" muted autoplay loop playsinline style="border-radius: 5px;">
+                      <source src="video/wild/converted/30.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <button class="carousel-nav next"
+                    style="
+                      position: absolute;
+                      top: 0;
+                      bottom: 0;
+                      right: 0;
+                      width: 3rem;
+                      background: rgba(0,0,0,0.2);
+                      border: none;
+                      border-top-left-radius: 5px;
+                      border-bottom-left-radius: 5px;
+                      cursor: pointer;
+                      z-index: 10;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    ">
+              &#10095;&#10095;
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const slides = document.querySelectorAll('.carousel-slide');
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+  
+        const showSlide = (index) => {
+          slides.forEach((slide, i) => {
+            slide.style.display = i === index ? 'block' : 'none';
+          });
+        };
+  
+        document.querySelector('.carousel-nav.next').addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          showSlide(currentIndex);
+        });
+  
+        document.querySelector('.carousel-nav.prev').addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+          showSlide(currentIndex);
+        });
+      });
+    </script>
+  </section>
+  
+  <section class="representation">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <!-- Change heading to: "Visuo-Tactile Pretraining & Downstream Imitation Learning" -->
+          <h2 class="title is-3">Visuo-Tactile Pretraining & Downstream Imitation Learning</h2>
+          <div class="content has-text-justified">
+            <p>
+              We pretrain on a large corpus of image-tactile pairs using a cross-attention mechanism. The model learns to reconstruct tactile images conditioned on masked tactile inputs and associated camera images. This pretraining yields a joint visuo-tactile representation, which is then combined with robot proprioceptive states and used as input for downstream manipulation tasks.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="columns is-centered">
+            <div class="column content">
+              <picture class="image">
+                <img alt="Pretraining Illustration" src="static/img/pretrain.png" style="width: 100%; border-radius:10px;">
+              </picture>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br>
+  <!-- Renamed "Capability Experiments" to "Task Demonstrations" -->
+  <section class="videos">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Task Demonstrations</h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4">Tasks Requiring In-Hand State Information</h2>
+        </div>
+      </div>
+
+      <div class="column is-full-width" style="color: grey;">
+        <b>(1) Transparent Tube Collection</b>. The robot must pick up a test tube from a box, reorient it in-hand using the test tube rack, and precisely insert it into the test tube rack. 
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/tube_success_1.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/tube_success_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-full-width" style="color: grey;">
+        <b>(2) Pencil Insertion</b>. The robot needs to insert a pencil into a sharpener. Since the pencil is initially grasped upright and vertically, the robot must first reorient it carefully before performing a precise insertion. 
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/insert_success_1.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/insert_success_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4">Tasks Requiring Fine-Grained Force Information</h2>
+        </div>
+      </div>
+
+      <div class="column is-full-width" style="color: grey;">
+        <b>(3) Fluid Transfer</b>. The robot uses a pipette to transfer water between containers. It must grasp the pipette firmly, apply just enough pressure to extract liquid without dropping it. Then the robot need to move to the top of other container and gently squeeze to release the water into it.  
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/transfer_success_1.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/transfer_success_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-full-width" style="color: grey;">
+        <b>(4) Whiteboard Erasing</b>. The robot uses a soft eraser to remove two strokes of text from the whiteboard. It must apply the right amount of pressure to erase the marker ink without exceeding force limits that could damage the system. The task requires consistent and controlled force application throughout. 
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/erase_success_1.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <div class="column content">
+            <video id="teaser_video" width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/erase_success_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+
+      <section>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Policy Robustness: Comparison with Baselines</h2>
+            
+              <div class="columns is-centered">
+                <div class="column content">
+                  <picture width="99%" style="border-radius:10px;">
+                    <img src="static/img/failure_case.png">
+                  </picture>
+                </div>
+              </div>
+      
+            <h2 class="title is-4"> Performance Comparison: Pretrained Policy vs. Vision-Only Policies </h2>
+          </div>
+        </div>
+
+
+
+
+        <!-- Show all 4 baseline comparisons by default, no toggle button -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-5"> Ours: Successful Reorientation and Insertion</h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/tube_baseline_compare.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <h2 class="title is-5"> Vision-Only Baseline: Repeated Reorientation </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/tube_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-5">Ours: Successful Expelling Fluid </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/transfer_compare_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <h2 class="title is-5">Vision-Only Baseline: Skip Expelling Fluid </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/transfer_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional two baseline comparisons formerly hidden -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-5">Ours: Clean Erase </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/erase_baseline_compare.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <h2 class="title is-5">Vision-Only Baseline: Unclean Erase </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/erase_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <h2 class="title is-5"> Ours: Reliable Reorientation with Precise In-hand Information </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/insert_compare_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <h2 class="title is-5"> Vision-Only Baseline: Missed Reorientation </h2>
+            <div class="columns is-centered">
+              <div class="column content">
+                <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+                  <source src="video/compressed/insert_baseline.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </section>
+
+    </div>
+  </section>
+
+  <!-- Add a button to hide/show the entire Pretraining Ablations section -->
+  <section class="videos">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Pretraining Ablations</h2>
+        </div>
+      </div>
+      <!-- New button under the heading -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <button class="button is-primary" onclick="togglePretrainAblation()" id="togglePretrainAblationButton">
+            Show Pretraining Ablations
+          </button>
+        </div>
+      </div>
+
+      <!-- Hide ablation videos by default -->
+      <div id="pretrainAblationSection" style="display:none;">
+
+        <!-- Low‐Epoch Regime (10 epochs, 197 demos) -->
+        <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
+          <div class="column is-full-width">
+            <h2 class="title is-4">Low-Epoch Regime (10 epochs, 197 demos)</h2>
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <!-- Swap so Policy w/ Pretrain is on the left -->
+          <div class="column">
+            <h2 class="title is-5">Policy w/ Pretrain (Ours)</h2>
+            <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/pretrain_10.mp4" type="video/mp4" />
+            </video>
+            <p class="content" style="margin-top:0.5rem;">
+              The pretrained model, by contrast, generates smoother motions—maintaining stable contact throughout reorientation and successfully completing insertion despite the severely limited training epochs.
+            </p>
+          </div>
+          <div class="column">
+            <h2 class="title is-5">Policy w/o Pretrain</h2>
+            <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/no_pretrain_10.mp4" type="video/mp4" />
+            </video>
+            <p class="content" style="margin-top:0.5rem;">
+              Without pretraining, the policy’s trajectories are highly erratic: the gripper repeatedly oscillates during the in-hand reorientation step, ultimately going out of distribution and failing the reorientation step.
+            </p>
+          </div>
+        </div>
+
+        <!-- Low‐Demo Regime (30 demos, 60 epochs) -->
+        <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
+          <div class="column is-full-width">
+            <h2 class="title is-4">Low-Demo Regime (30 demos, 60 epochs)</h2>
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <!-- Again, put w/ Pretrain on the left -->
+          <div class="column">
+            <h2 class="title is-5">Policy w/ Pretrain (Ours)</h2>
+            <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/pretrain_30_demo.mp4" type="video/mp4" />
+            </video>
+            <p class="content" style="margin-top:0.5rem;">
+              The pretrained policy, however, leverages its learned visuo-tactile representation to disambiguate intermediate states and carries the manipulation through to completion despite trained with few demonstrations.
+            </p>
+          </div>
+          <div class="column">
+            <h2 class="title is-5">Policy w/o Pretrain</h2>
+            <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+              <source src="video/compressed/no_pretrain_30.mp4" type="video/mp4" />
+            </video>
+            <p class="content" style="margin-top:0.5rem;">
+              With only 30 demonstrations, the non-pretrained policy becomes trapped halfway through the task, showing confusion between grasped-state configurations and stalling before any meaningful progress.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Toggle script for the Pretraining Ablations -->
+  <script>
+    function togglePretrainAblation() {
+      const section = document.getElementById("pretrainAblationSection");
+      const button = document.getElementById("togglePretrainAblationButton");
+      if (section.style.display === "none" || section.style.display === "") {
+        section.style.display = "block";
+        button.innerText = "Hide Pretraining Ablations";
+      } else {
+        section.style.display = "none";
+        button.innerText = "Show Pretraining Ablations";
+      }
+    }
+  </script>
+
+  </br>
+  </br>
+  </br>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Here</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lazy-load script for non-wild videos -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const vid = entry.target;
+            vid.play().catch(() => {});
+            obs.unobserve(vid);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('video[data-autoplay-on-visible]').forEach(v => {
+        observer.observe(v);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
