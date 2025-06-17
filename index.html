@@ -35,13 +35,26 @@
         <span aria-hidden="true"></span>
       </a>
     </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="">
+        <span class="icon">
+            <i class="fas fa-home"></i>
+        </span>
+        </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Related Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://binghao-huang.github.io/3D-ViTac/" target="_blank">3D-ViTac</a>
+            <a class="navbar-item" href="https://binghao-huang.github.io/vt_refine/" target="_blank">VT-Refine</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </nav>
 
-  <!-- <section>
-    <div class="hero-video" style="position: absolute; inset: 0;">
-      <img src="static/img/teaser.png" style="width: 100vw;  object-fit: cover;">
-    </div>
-  </section> -->
 
   <section class="hero">
     <div class="hero-body">
@@ -51,7 +64,7 @@
 
             <!-- combine title and subtitle in one block -->
             <div class="publication-header">
-              <h1 style="margin-bottom: 0; font-size: 300%">
+              <h1 style="margin-bottom: 0; font-size: 400%">
                 Touch in the Wild
               </h1>
               <h1 class="title is-2 publication-title">
@@ -67,43 +80,33 @@
               </p>
 
               <p class="is-size-5 publication-authors" style="margin: 0; color: #666;">
-                <sup>*</sup>Equal contribution &nbsp;&nbsp; 
+                <sup>*</sup>Equal contribution &nbsp;&nbsp; Columbia University<sup>1</sup>
               </p>
-              <p class="is-size-5 publication-authors" style="margin: 0; font-size: 200%">
-                <b>Columbia University<sup>1</sup></b>
-              </p>
-
+              <div class="image-container"> 
+                <img style="display: inline-block; width: 50%;" src="static/img/columbia-university-logo.png"/> &nbsp &nbsp &nbsp
             </div>
-
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-
-  <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-4">
-          Our Visual-Tactile policy can perform fine-grained manipulations, such as handling transparent test tubes.
-        </h2>
-        <h2 class="title is-5" style="color: rgb(189, 189, 189);">
-          (Under human disturbances and visual occlusions, the robot relies on tactile feedback to guide its decisions.)
-        </h2>
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-full-width">
-            <h3 class="title is-4"></h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <section class="overall teaser">
     <div class="container">
       <div class="hero-body has-text-centered">
-        <video id="teaser_video" width=50% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-4">
+              Our Visual-Tactile policy can perform fine-grained manipulations, such as handling transparent test tubes.
+            </h2>
+            <h2 class="title is-5" style="color: rgb(189, 189, 189);">
+              (Under human disturbances and visual occlusions, the robot relies on tactile feedback to guide its decisions.)
+            </h2>
+            </br>
+          </div>
+        </div>
+        <video id="teaser_video" width=50% muted controls data-autoplay-on-visible style="border-radius:10px;">
           <source src="video/compressed/teaser.mp4" type="video/mp4">
         </video>
       </div>
@@ -724,6 +727,68 @@
       }
     }
   </script>
+
+<section>
+  <div class="container">
+  <br>
+  <h2 class="title is-3">Related Works</h2>
+  <article class="columns">
+    <div class="column is-3">
+      <picture class="image">
+        <img src="static/img/3d-vitac.png">
+      </picture>
+    </div>
+    <div class="column">
+      <div class="content">
+        <p>
+          <b>3D-ViTac: Learning Fine-Grained Manipulation with Visuo-Tactile Sensing</b><br>
+            <a href="https://binghao-huang.github.io/">Binghao Huang</a><sup>1</sup>,
+            <a href="https://wangyixuan12.github.io/">Yixuan Wang</a><sup>1</sup>,
+            <a href="">Xinyi Yang</a><sup>2</sup>,
+            <a href="https://yyueluo.com/">Yiyue Luo</a><sup>3</sup>,
+            <a href="https://yunzhuli.github.io/">Yunzhu Li</a><sup>1</sup>
+
+          
+          <br>
+          <em>Conference on Robot Learning (<b>CoRL</b>), 2024</em><br>
+          <a href="https://binghao-huang.github.io/3D-ViTac/" target="_blank">[<u>Webpage</u>]</a>
+          <a href="https://openreview.net/forum?id=bk28WlkqZn" target="_blank">[<u>Paper</u>]</a>
+          <a href="https://docs.google.com/document/d/1XGyn-iV_wzRmcMIsyS3kwcrjxbnvblZAyigwbzDsX-E/edit?tab=t.0#heading=h.ny8zu0pq9mxy" target="_blank">[<u>Hardware Tutorial</u>]</a>
+          <a href="https://www.youtube.com/watch?v=ZN3mHMNZC7Q" target="_blank">[<u>Video</u>]</a>
+        </p>
+      </div>
+    </div>
+  </article>
+  <article class="columns">
+    <div class="column is-3">
+      <video id="teaser_video" width=99% muted autoplay loop style="border-radius:10px; ">
+        <source src="video/vtrefine.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="column">
+      <div class="content">
+        <p>
+          <b>VT-Refine: Learning Bimanual Assembly with
+            Visuo-Tactile Feedback via Simulation Fine-Tuning</b><br>
+              <a href="https://binghao-huang.github.io/">Binghao Huang</a><sup>1</sup>,
+              <a href="https://people.csail.mit.edu/jiex/">Jie Xu</a><sup>2</sup>,
+              <a href="https://research.nvidia.com/person/iretiayo-akinola">Iretiayo Akinola</a><sup>2</sup>,
+              <a href="https://wyang.me/">Wei Yang</a><sup>2</sup>,
+              <a href="https://balakumar-s.github.io/">Balakumar Sundaralingam</a><sup>2</sup>,
+              <a href="https://www.linkedin.com/in/rowlandoflaherty/">Rowland O'Flaherty</a><sup>2</sup>,
+              <a href="https://homes.cs.washington.edu/~fox/">Dieter Fox</a><sup>2</sup>,
+              <a href="https://xiaolonw.github.io/">Xiaolong Wang</a><sup>2,3</sup>,
+              <a href="https://cs.gmu.edu/~amousavi/">Arsalan Mousavian</a><sup>2</sup>,
+              <a href="https://research.nvidia.com/person/yu-wei-chao">Yu-Wei Chao</a><sup>2†</sup>,
+              <a href="https://yunzhuli.github.io/">Yunzhu Li</a><sup>1†</sup>
+          <br>
+          <a href="https://binghao-huang.github.io/vt_refine/" target="_blank">[<u>Webpage</u>]</a>
+        </p>
+      </div>
+    </div>
+  </article>
+  </div>
+</section>
 
   </br>
   </br>
