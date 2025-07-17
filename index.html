@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="description"
     content="Handheld grippers are increasingly used to collect human demonstrations due to their ease of deployment and versatility. However, most existing designs lack tactile sensing, despite the critical role of tactile feedback in precise manipulation. We present a portable, lightweight gripper with integrated tactile sensors that enables synchronized collection of visual and tactile data in diverse, real-world, and in-the-wild settings. Building on this hardware, we propose a cross-modal representation learning framework that integrates visual and tactile signals while preserving their distinct characteristics. The learned representations are interpretable and consistently emphasize contact regions during physical interactions. When used for downstream manipulation tasks, these representations enable more efficient and effective policy learning, supporting precise robotic manipulation based on multimodal feedback. We validate our approach on fine-grained tasks such as test tube insertion and pipette-based fluid transfer, demonstrating improved accuracy and robustness under external disturbances.">
-  <meta name="author" content="">
+  <meta name="author" content="Xinyue Zhu, Binghao Huang, Yunzhu Li">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Touch in the Wild: Learning Fine-Grained Manipulation with a Portable Visuo-Tactile Gripper</title>
 
@@ -89,7 +89,7 @@
                 <div class="publication-links">
                   <!-- PDF Link. -->
                   <span class="link-block">
-                    <a href="https://binghao-huang.github.io/touch_in_the_wild//Touch_in_the_Wild_arxiv.pdf"
+                    <a href="https://binghao-huang.github.io/touch_in_the_wild/Touch_in_the_Wild_arxiv.pdf"
                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
@@ -156,7 +156,7 @@
             <h2 class="title is-5" style="color: rgb(189, 189, 189);">
               (Under human disturbances and visual occlusions, the robot relies on tactile feedback to guide its decisions.)
             </h2>
-            </br>
+            <br>
           <video id="teaser_video" width=100% muted controls data-autoplay-on-visible style="border-radius:10px;">
             <source src="video/compressed/new_teaser.mp4" type="video/mp4">
           </video>
@@ -178,7 +178,7 @@
     </div>
   </section>
 
-  <section class="Physcial">
+  <section class="Physical">
     <div class="container">
       <div class="columns is-centered has-text-centered">
         <div class="column is-full-width">
@@ -548,12 +548,11 @@
 
   <br>
   <br>
-  <!-- Renamed "Capability Experiments" to "Task Demonstrations" -->
   <section class="videos">
     <div class="container">
       <div class="columns is-centered has-text-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Autonomous Policy Eexcution</h2>
+          <h2 class="title is-3">Autonomous Policy Execution</h2>
         </div>
       </div>
 
@@ -564,7 +563,7 @@
       </div>
 
       <div class="column is-full-width" style="color: grey;">
-        <b>(1) Transparent Tube Collection</b>. The robot must pick up a test tube from a box, reorient it in-hand using the test tube rack, and precisely insert it into the test tube rack. 
+        <b>(1) Test Tube Collection</b>. The robot must pick up a test tube from a box, reorient it in-hand using the test tube rack, and precisely insert it into the test tube rack. 
       </div>
 
       <div class="columns is-centered has-text-centered">
@@ -585,7 +584,7 @@
       </div>
 
       <div class="column is-full-width" style="color: grey;">
-        <b>(2) Pencil Insertion</b>. The robot needs to insert a pencil into a sharpener. Since the pencil is initially grasped upright and vertically, the robot must first reorient it carefully before performing a precise insertion. 
+        <b>(2) Pencil Insertion</b>. The robot needs to insert a pencil into a sharpener. Because the pencil is initially grasped with a tilt, the robot must first reorient it so that it is parallel to the gripper before making the precise insertion.
       </div>
 
       <div class="columns is-centered has-text-centered">
@@ -612,7 +611,7 @@
       </div>
 
       <div class="column is-full-width" style="color: grey;">
-        <b>(3) Fluid Transfer</b>. The robot uses a pipette to transfer water between containers. It must grasp the pipette firmly, apply just enough pressure to extract liquid without dropping it. Then the robot need to move to the top of other container and gently squeeze to release the water into it.  
+        <b>(3) Fluid Transfer</b>. The robot uses a pipette to transfer fluid between containers. It must grasp the pipette firmly, apply just enough pressure to extract liquid without dropping it. Then the robot needs to move to the top of the other container and gently squeeze to release the fluid into it.  
       </div>
 
       <div class="columns is-centered has-text-centered">
@@ -667,18 +666,18 @@
           <div class="columns is-centered">
             <!-- Test Tube -->
             <div class="column has-text-left">
-              <h2 class="title is-5">1) Test Tube Collection</h2>
+              <h2 class="title is-5"> (1) Test Tube Collection</h2>
               <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
                 <source src="video/compressed/tube_robustness.mp4" type="video/mp4" />
               </video>
               <p class="content" style="margin-top:0.5rem;">
-                Under human disturbances, the policy uses tactile feedback to determine whether to reorient or insert the test tube, based on whether the signal is tilted or upright.
+                Under human disturbances, the policy uses tactile feedback to determine whether to reorient or insert the test tube, based on whether the tactile signal is tilted or upright.
               </p>
             </div>
       
             <!-- Whiteboard -->
             <div class="column has-text-left">
-              <h2 class="title is-5">2) Whiteboard Erasing</h2>
+              <h2 class="title is-5"> (2) Whiteboard Erasing</h2>
               <video width="100%" muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
                 <source src="video/compressed/erase_robustness.mp4" type="video/mp4" />
               </video>
@@ -789,7 +788,7 @@
 
         <div class="columns is-centered has-text-centered">
           <div class="column">
-            <h2 class="title is-5"> Ours: Reliable Reorientation with Precise In-Hand Info </h2>
+            <h2 class="title is-5"> Ours: Reliable Reorientation with Precise In-Hand Information </h2>
             <div class="columns is-centered">
               <div class="column content">
                 <video id="teaser_video" width=99% muted controls preload="none" data-autoplay-on-visible style="border-radius:10px;">
@@ -839,7 +838,7 @@
         <!-- Low‐Epoch Regime (10 epochs, 197 demos) -->
         <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
           <div class="column is-full-width">
-            <h2 class="title is-4">Low-Epoch Regime: 197 Demos, 10 Epochs (Typical 60 Epochs)</h2>
+            <h2 class="title is-4">Low-Epoch Regime: 197 Demos, 10 Epochs (Typically 60 Epochs)</h2>
           </div>
         </div>
         <div class="columns is-centered">
@@ -850,7 +849,7 @@
               <source src="video/compressed/pretrain_10.mp4" type="video/mp4" />
             </video>
             <p class="content" style="margin-top:0.5rem;">
-              The pretrained model, by contrast, generates smoother motions—maintaining stable contact throughout reorientation and successfully completing insertion despite the severely limited training epochs.
+              With just 10 training epochs, the policy with pretraining learns faster and successfully reorients and inserts the test tube.
             </p>
           </div>
           <div class="column">
@@ -859,7 +858,7 @@
               <source src="video/compressed/no_pretrain_10.mp4" type="video/mp4" />
             </video>
             <p class="content" style="margin-top:0.5rem;">
-              Without pretraining, the policy’s trajectories are highly erratic: the gripper repeatedly oscillates during the in-hand reorientation step, ultimately going out of distribution and failing the reorientation step.
+              With the same 10 training epochs, the policy without pretraining exhibits highly erratic trajectories: the gripper repeatedly oscillates during in-hand reorientation, eventually going out of distribution and failing the task.
             </p>
           </div>
         </div>
@@ -867,7 +866,7 @@
         <!-- Low‐Demo Regime (30 demos, 60 epochs) -->
         <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
           <div class="column is-full-width">
-            <h2 class="title is-4">Low-Demo Regime: 30 Demos, 60 Epochs (Typical 200 Demos)</h2>
+            <h2 class="title is-4">Low-Demo Regime: 30 Demos, 60 Epochs (Typically 197 Demos)</h2>
           </div>
         </div>
         <div class="columns is-centered">
@@ -878,7 +877,7 @@
               <source src="video/compressed/pretrain_30_demo.mp4" type="video/mp4" />
             </video>
             <p class="content" style="margin-top:0.5rem;">
-              The pretrained policy, however, leverages its learned visuo-tactile representation to disambiguate intermediate states and carries the manipulation through to completion despite trained with few demonstrations.
+              With only 30 demonstrations, the policy with pretraining uses its learned visuo‑tactile representation to disambiguate intermediate task states and transitions smoothly from grasping to reorienting the test tube.
             </p>
           </div>
           <div class="column">
@@ -887,7 +886,7 @@
               <source src="video/compressed/no_pretrain_30.mp4" type="video/mp4" />
             </video>
             <p class="content" style="margin-top:0.5rem;">
-              With only 30 demonstrations, the non-pretrained policy becomes trapped halfway through the task, showing confusion between grasped-state configurations and stalling before any meaningful progress.
+              With the same 30 demonstrations, the policy without pretraining becomes stuck after grasping the test tube: it cannot distinguish between similar grasped‑state configurations and therefore fails to complete the task.
             </p>
           </div>
         </div>
@@ -918,9 +917,9 @@
   <h2 class="title is-3">BibTeX</h2>
   <pre><code>@article{zhu2025touch,
 title={Touch in the Wild: Learning Fine-Grained Manipulation with a Portable Visuo-Tactile Gripper},
-author={Zhu, Xinyue and Huang, Binghao and Li, Yunzhu}
+author={Zhu, Xinyue and Huang, Binghao and Li, Yunzhu},
 booktitle={RSS 2025 Workshop Robot Hardware-Aware Intelligence},
-year={2025}
+year={2025},
 }</code></pre>
   </div>
 </section>
@@ -1029,9 +1028,9 @@ year={2025}
   </div>
 </section>
 
-  </br>
-  </br>
-  </br>
+  <br>
+  <br>
+  <br>
 
   <footer class="footer">
     <div class="container">
